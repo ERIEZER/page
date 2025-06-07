@@ -1,4 +1,4 @@
-// app/pagedetaile/[id]/page.tsx
+"use client"
 
 
 import Image from 'next/image';
