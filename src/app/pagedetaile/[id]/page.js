@@ -1,5 +1,5 @@
 // app/pagedetaile/[id]/page.tsx
-"use client"
+
 
 import Image from 'next/image';
 import { profilesObj } from '@/data/profile';
