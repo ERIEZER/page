@@ -1,14 +1,21 @@
+// app/pagedetaile/[id]/page.tsx
 "use client"
 
 import Image from 'next/image';
 import { profilesObj } from '@/data/profile';
 import "../../components/styles/profiledetaile.css";
 import { useRouter } from 'next/navigation';
-import {use} from 'react';
+import { use } from 'react';
 
+// 🔽 追加：静的エクスポートで必要なIDを列挙する関数
+export async function generateStaticParams() {
+  return Object.values(profilesObj).map((profile) => ({
+    id: profile.id.toString()
+  }));
+}
 
 export default function ProfileDetailPage({ params }) {
-  const { id } = use(params);                 // URL から受け取った文字列
+  const { id } = use(params); // URL から受け取った文字列
   const profile = Object.values(profilesObj)
     .find(p => p.id === Number(id));     // Number に変換してマッチ
 
@@ -18,15 +25,12 @@ export default function ProfileDetailPage({ params }) {
 
   const router = useRouter()
   const goToTop = () => {
-    // アプリのルートページ ("/") に遷移
     router.push('/')
   }
 
-return (
+  return (
     <div className="profile-detail-wrapper">
       <div className="profile-detail-card">
-        
-        {/* ヘッダー */}
         <div className="profile-detail-header">
           <Image
             src={profile.prof_img}
@@ -38,25 +42,13 @@ return (
           <h2 className="profile-detail-name">{profile.jp_name}</h2>
         </div>
 
-        {/* 本文 */}
         <div className="profile-detail-body">
           <p><strong>会社名：</strong>{profile.company}</p>
           <p><strong>誕生日：</strong>{profile.year}</p>
-
-          {profile.hobby && (
-            <p><strong>趣味：</strong>{profile.hobby}</p>
-          )}
-
-          {profile.aiming && (
-            <p><strong>目標：</strong>{profile.aiming}</p>
-          )}
-
+          {profile.hobby && <p><strong>趣味：</strong>{profile.hobby}</p>}
+          {profile.aiming && <p><strong>目標：</strong>{profile.aiming}</p>}
           {profile.company_img && (
-            <a
-              href={profile.company_id}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href={profile.company_id} target="_blank" rel="noopener noreferrer">
               <Image
                 src={profile.company_img}
                 alt={`${profile.company} のロゴ`}
@@ -68,13 +60,9 @@ return (
           )}
         </div>
 
-        {/* フッター（ボタン） */}
         <div className="profile-detail-footer">
-          <button className="back-button" onClick={goToTop}>
-            TOPへ戻る
-          </button>
+          <button className="back-button" onClick={goToTop}>TOPへ戻る</button>
         </div>
-
       </div>
     </div>
   )
